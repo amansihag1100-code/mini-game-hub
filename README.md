@@ -12,7 +12,7 @@ Features :
 3. Games -
    i) Tic-Tac-Toe (10 * 10) - players must get 5 symbols in a row (horizontal,vertical,diagonal)
    
-   ii) Connect Four ( 7 * 7 ) - players drops coins or any symbol or mark into columns , first to           connect four wins.
+   ii) Connect Four ( 7 * 7 ) - players drops coins or any symbol or mark into columns , first to connect four wins.
    
    iii) Othello (8 * 8) - players capture opponent discs by trapping them
    
@@ -22,15 +22,23 @@ Features :
 6. File structure -
 
    mini-game-hub -
+   
        1. games/ -
+   
              1. connect4.py
              2. othello.py
              3. titactoe.py
+   
        2. README.md
+   
        3. game.py
+   
        4. history.csv
+   
        5. leaderboard.sh
+   
        6. main.sh
+   
        7. users.tsv
 
 
