@@ -1,4 +1,4 @@
-                                   MINI GAME HUB
+                                                                           MINI GAME HUB
 It is a two player game platform made using bash and python . The basic structure of the project is that two users will log in and undergo authentication , then from the game menu the users can choose any game they want to play from available three games , play through a GUI and view results recorded in a leaderboard system.
 
 Features :
