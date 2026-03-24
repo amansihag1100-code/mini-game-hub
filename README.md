@@ -11,7 +11,9 @@ Features :
    
 3. Games -
    i) Tic-Tac-Toe (10 * 10) - players must get 5 symbols in a row (horizontal,vertical,diagonal)
-   ii) Connect Four ( 7 * 7 ) - players drops coins or any symbol or mark into columns , first to connect four wins.
+   
+   ii) Connect Four ( 7 * 7 ) - players drops coins or any symbol or mark into columns , first to           connect four wins.
+   
    iii) Othello (8 * 8) - players capture opponent discs by trapping them
    
 5. Leaderboard and Analytics -
