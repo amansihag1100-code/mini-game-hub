@@ -65,19 +65,37 @@ def check_exp():
     global exp
     return not (exp[0] < 0 or exp[0] >= dim or exp[1] < 0 or exp[1] >= dim)
 
+def valid_path(x, y, dx, dy):
+    global turn, enemy
+    valid = True
+    el = board[y+dy][x+dx]
+    if el == turn:
+        return False
+    elif el == enemy:
+        pass 
+    """
+    I have chance
+    If I find turn from now It is a valid move
+    If not invlaid
+    If I find any -1 return false
+    """
 
-def valid_move(x, y) -> bool:
-    # First I need to loop in complete board
-    # If it is emmpty then check the folloeing conditions
-    # there must be a white in nearby square
-    # If you find an empty square next stop. -> invalid
-    # If you again find white, keep moving
-    # If you find black stop
-    # There are 8 possible directions.
-    xo, yo = x, y
+
+def valid_move(x, y):
+    """
+    First I need to loop in complete board
+    If it is emmpty then check the folloeing conditions
+    there must be a white in nearby square
+    If you find an empty square next stop. -> invalid
+    If you again find white, keep moving
+    If you find black stop
+    There are 8 possible directions.
     global enemy, turn
-    validity = True
-    # as soon as validity becomes false I want to return
+    as soon as validity becomes false I want to return
+    for each value of (x,y), I have 8 possible values of validity
+    I need to return an array of 8 elements indicating validity in each direction
+    """
+    va = np.ones(8)
     for [dx, dy] in [
         (0, 1),
         (0, -1),
@@ -88,6 +106,7 @@ def valid_move(x, y) -> bool:
         (1, -1),
         (-1, 1),
     ]:
+        while
         if board[y + dy][x + dx] == enemy:
             x += dx
             y += dy
