@@ -19,15 +19,13 @@ while True:
 
     if choice == "1":
         print("Starting Tic Tac Toe.....")
-    
-    elif choice =="2":
-              print("Starting Connect Four.....")
-    elif choice =="3":
-              print("Starting Othello.....")
-    elif choice =="4":
-              print("GoodBye!")
-              break
+
+    elif choice == "2":
+        print("Starting Connect Four.....")
+    elif choice == "3":
+        print("Starting Othello.....")
+    elif choice == "4":
+        print("GoodBye!")
+        break
     else:
-              print("INVALID CHOICE NUMBER!")
-
-
+        print("INVALID CHOICE NUMBER!")
