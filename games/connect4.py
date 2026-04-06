@@ -119,7 +119,7 @@ while True:
         # Keyboard input
         elif event.type == pg.KEYDOWN:
             # Filling board and checking winner
-            if event.key == pg.K_RETURN or event.key == pg.K_e:
+            if event.key == pg.K_RETURN or event.key == pg.K_e or event.key == pg.K_i:
                 if not game_active:
                     reset()
                 elif game_active and height[ptr] < dim:
@@ -139,9 +139,9 @@ while True:
             elif event.key == pg.K_r:
                 reset()
             # Movement Keys
-            elif event.key == pg.K_LEFT or event.key == pg.K_a:
+            elif event.key == pg.K_LEFT or event.key == pg.K_a or event.key == pg.K_h:
                 ptr = max(0, ptr - 1)
-            elif event.key == pg.K_RIGHT or event.key == pg.K_d:
+            elif event.key == pg.K_RIGHT or event.key == pg.K_d or event.key == pg.K_l:
                 ptr = min(dim - 1, ptr + 1)
 
     if game_active:

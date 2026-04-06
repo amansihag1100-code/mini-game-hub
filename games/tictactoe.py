@@ -134,10 +134,10 @@ while True:
         # Keyboard input
         elif event.type == pg.KEYDOWN:
             # Filling board and checking winner
-            if event.key == pg.K_RETURN or event.key == pg.K_e:
-                if game_active == False:
+            if event.key == pg.K_RETURN or event.key == pg.K_e or event.key == pg.K_i:
+                if not game_active:
                     reset()
-                elif game_active == True and board[swap_ptr(ptr)] == -1:
+                elif game_active and board[swap_ptr(ptr)] == -1:
                     board[swap_ptr(ptr)] = turn
                     toggle_turn()
                     winner = check_winner()
@@ -154,25 +154,25 @@ while True:
             elif event.key == pg.K_r:
                 reset()
             # Movement Keys
-            elif event.key == pg.K_UP or event.key == pg.K_w:
+            elif event.key == pg.K_UP or event.key == pg.K_w or event.key == pg.K_k:
                 exp[1] -= 1
                 if check_exp():
                     ptr = exp.copy()
                 else:
                     exp = ptr.copy()
-            elif event.key == pg.K_DOWN or event.key == pg.K_s:
+            elif event.key == pg.K_DOWN or event.key == pg.K_s or event.key == pg.K_j:
                 exp[1] += 1
                 if check_exp():
                     ptr = exp.copy()
                 else:
                     exp = ptr.copy()
-            elif event.key == pg.K_LEFT or event.key == pg.K_a:
+            elif event.key == pg.K_LEFT or event.key == pg.K_a or event.key == pg.K_h:
                 exp[0] -= 1
                 if check_exp():
                     ptr = exp.copy()
                 else:
                     exp = ptr.copy()
-            elif event.key == pg.K_RIGHT or event.key == pg.K_d:
+            elif event.key == pg.K_RIGHT or event.key == pg.K_d or event.key == pg.K_l:
                 exp[0] += 1
                 if check_exp():
                     ptr = exp.copy()
