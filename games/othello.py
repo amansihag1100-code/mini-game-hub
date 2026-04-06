@@ -24,6 +24,7 @@ exp = ptr.copy()
 turn = 1
 winner = -1
 game_active = True
+enemy = 1 - turn
 
 # assets
 symbol = {0: "O", 1: "X", 2: "Tie"}
@@ -64,19 +65,36 @@ def check_exp():
     global exp
     return not (exp[0] < 0 or exp[0] >= dim or exp[1] < 0 or exp[1] >= dim)
 
-def valid_move(len, x, y) -> bool:
-    #First I need to loop in complete board
-    #If it is emmpty then check the folloeing conditions
-    #there must be a white in nearby square
-    #If you find an empty square next stop. -> invalid
-    #If you again find white, keep moving
-    #If you find black stop
-    #There are 8 possible directions.
-    for ptr in 
-    for [dx, dy] in [(0, 1), (0, -1), (1, 0), (-1, 0), (1, 1),(-1, -1),(1,-1), (-1, 1)]:
 
-
-
+def valid_move(x, y) -> bool:
+    # First I need to loop in complete board
+    # If it is emmpty then check the folloeing conditions
+    # there must be a white in nearby square
+    # If you find an empty square next stop. -> invalid
+    # If you again find white, keep moving
+    # If you find black stop
+    # There are 8 possible directions.
+    xo, yo = x, y
+    global enemy, turn
+    validity = True
+    # as soon as validity becomes false I want to return
+    for [dx, dy] in [
+        (0, 1),
+        (0, -1),
+        (1, 0),
+        (-1, 0),
+        (1, 1),
+        (-1, -1),
+        (1, -1),
+        (-1, 1),
+    ]:
+        if board[y + dy][x + dx] == enemy:
+            x += dx
+            y += dy
+            if board[y + dy][x + dx] == -1:
+                return False
+        else:
+            return False
 
 
 def examine(len, x, y, dx, dy) -> int:
