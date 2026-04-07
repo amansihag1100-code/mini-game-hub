@@ -1,33 +1,74 @@
 #!/bin/bash
 
-echo " MINI GAME HUB "
+echo "WELCOME TO MINI GAME HUB"
 
-# PLAYER 1
+function_to_login_user(){
 
-read -p "Enter Player 1 Username : " user1
+	while true
+	do
+		echo " ENTER USERNAME: "
+		read username
 
-read -s -p "Enter Password : " password1
+		echo " ENTER PASSWORD: "
+		read password
 
-echo ""
+		hashed_password=$( echo -n "$password" | sha256sum | cut -d ' ' -f1)
 
-# PLAYER 2
+		user_found=0
 
-read -p "Enter Player 2 Username: " user2 
+		while read u p 
+		do
+			if [ "$u" = "$username" ]
+			then 
+				user_found=1
 
-read -s -p "Enter password : " password2
-echo ""
+				if [ "$p" = "$hashed_password" ]
+				then
+					echo " LOGIN SUCCESSFUL "
+				
+					return
+				else
+					echo " WRONG PASSWORD ,TRY AGAIN "
+					break
+				fi
+			fi
+		done < users.tsv
 
-# PREVENT SAME USER REGISTRATION
+		if [ "$user_found" = "0" ]
+		then
+			echo " USER NOT FOUND. WANT TO REGISTER ? ( TYPE (Yes/No))"
+			read ans
 
-if [ "$user1" == "$user2" ]; then
-	echo "Players must be different!"
-	exit 1
+			if [ "$ans" = "Yes" ]
+			then
+				echo "$username $hashed_password">> users.tsv
+				echo "REGISTRATION SUCCESSFUL "
+				
+				return
+			fi
+		fi
+	done
+}
+
+echo " LOGIN PLAYER 1"
+function_to_login_user
+user1=$username
+
+echo " LOGIN PLAYER 2"
+function_to_login_user
+user2=$username
+
+
+if [ "$user1" = "$user2" ]
+then
+	echo " USERNAMES SHOULD BE DIFFERENT"
+	exit
 fi
 
-echo "LOGGING IN ....."
-
-#let user1 and user2 enter in game.py
+echo " STARTING GAME .... "
 
 python3 game.py "$user1" "$user2"
 
 
+
+						
