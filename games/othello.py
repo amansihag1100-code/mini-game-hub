@@ -65,20 +65,30 @@ def check_exp():
     global exp
     return not (exp[0] < 0 or exp[0] >= dim or exp[1] < 0 or exp[1] >= dim)
 
-def valid_path(x, y, dx, dy):
+def valid_path(x, y, dx, dy) -> bool:
     global turn, enemy
-    valid = True
-    el = board[y+dy][x+dx]
-    if el == turn:
+    xe, ye = x+dx , y+dy
+    if board[ye][xe] == turn or board[y+dy][x+dx] == -1:
         return False
-    elif el == enemy:
-        pass 
-    """
-    I have chance
-    If I find turn from now It is a valid move
-    If not invlaid
-    If I find any -1 return false
-    """
+    
+    while(True):
+        xe += dx
+        ye += dy
+        if xe<0 or xe>=dim or ye<0 or ye>=dim:
+            return False
+        elif board[ye][xe] == turn:
+            return True
+        elif board[ye][xe] == -1:
+            return True
+        """
+        Here I enter a loop where I just need to search for black
+        If I get out of bound or find an empty square: game over
+        else we found it
+        I have chance
+        If I find turn from now It is a valid move
+        If not invlaid
+        If I find any -1 return false
+        """
 
 
 def valid_move(x, y):
