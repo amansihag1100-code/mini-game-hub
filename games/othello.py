@@ -65,21 +65,25 @@ def check_exp():
     global exp
     return not (exp[0] < 0 or exp[0] >= dim or exp[1] < 0 or exp[1] >= dim)
 
-def valid_path(x, y, dx, dy) -> bool:
+def valid_path(x, y, dx, dy) -> int:
+    """
+    -1 => no valid move
+    n => n times (dx,dy) is the position of the other black piece
+    """
     global turn, enemy
-    xe, ye = x+dx , y+dy
-    if board[ye][xe] == turn or board[y+dy][x+dx] == -1:
-        return False
-    
+    if board[y+dy][x+dx] == turn or board[y+dy][x+dx] == -1:
+        return -1
+    i = 1
     while(True):
-        xe += dx
-        ye += dy
+        i += 1
+        xe = x + i*dx
+        ye = y + i*dy
         if xe<0 or xe>=dim or ye<0 or ye>=dim:
-            return False
+            return -1
         elif board[ye][xe] == turn:
-            return True
+            return i
         elif board[ye][xe] == -1:
-            return True
+            return -1
         """
         Here I enter a loop where I just need to search for black
         If I get out of bound or find an empty square: game over
@@ -88,6 +92,7 @@ def valid_path(x, y, dx, dy) -> bool:
         If I find turn from now It is a valid move
         If not invlaid
         If I find any -1 return false
+        I need to return both validity and index because I need to switch the pieces in between as well
         """
 
 
