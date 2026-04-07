@@ -1,12 +1,13 @@
 #!/bin/bash
 
 echo "WELCOME TO MINI GAME HUB"
-
+echo""
 echo " WANT THE CODE FOR THIS GAME , THEN SCAN THIS QR CODE OR GO TO MY REPO GIVEN BELOW AND MAKE YOUR OWN "
 # BUT SORRY MY REPO IS PRIVATE 
 qrencode -t ANSIUTF8 "https://github.com/amansihag1100-code/mini-game-hub"
 echo""
 echo "OR"
+echo ""
 echo "REPO ADDRESS :  https://github.com/amansihag1100-code/mini-game-hub "
 
 
@@ -16,9 +17,11 @@ function_to_login_user(){
 	do
 		echo " ENTER USERNAME: "
 		read username
+		echo ""
 
 		echo " ENTER PASSWORD: "
 		read password
+		echo ""
 
 		hashed_password=$( echo -n "$password" | sha256sum | cut -d ' ' -f1)
 
@@ -46,6 +49,8 @@ function_to_login_user(){
 		then
 			echo " USER NOT FOUND. WANT TO REGISTER ? ( TYPE (Yes/No))"
 			read ans
+			echo""
+
 
 			if [ "$ans" = "Yes" ]
 			then
@@ -58,10 +63,12 @@ function_to_login_user(){
 	done
 }
 
+echo""
 echo " LOGIN PLAYER 1"
 function_to_login_user
 user1=$username
 
+echo""
 echo " LOGIN PLAYER 2"
 function_to_login_user
 user2=$username
@@ -69,6 +76,7 @@ user2=$username
 
 if [ "$user1" = "$user2" ]
 then
+	echo""
 	echo " USERNAMES SHOULD BE DIFFERENT"
 	exit
 fi
