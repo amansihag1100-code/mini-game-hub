@@ -2,6 +2,14 @@
 
 echo "WELCOME TO MINI GAME HUB"
 
+echo " WANT THE CODE FOR THIS GAME , THEN SCAN THIS QR CODE OR GO TO MY REPO GIVEN BELOW AND MAKE YOUR OWN "
+# BUT SORRY MY REPO IS PRIVATE 
+qrencode -t ANSIUTF8 "https://github.com/amansihag1100-code/mini-game-hub"
+echo""
+echo "OR"
+echo "REPO ADDRESS :  https://github.com/amansihag1100-code/mini-game-hub "
+
+
 function_to_login_user(){
 
 	while true
