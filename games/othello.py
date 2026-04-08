@@ -11,8 +11,8 @@ screen_width = space
 screen = pg.display.set_mode((screen_width, screen_height))
 
 # general
-len = 3
-dim = 3
+len = 8
+dim = 8
 box_len = space / (dim + 2)
 pgfont = pg.font.Font(None, int(box_len))
 x_surf = pgfont.render("X", False, "Lime")
@@ -65,20 +65,21 @@ def check_exp():
     global exp
     return not (exp[0] < 0 or exp[0] >= dim or exp[1] < 0 or exp[1] >= dim)
 
+
 def valid_path(x, y, dx, dy) -> int:
     """
     -1 => no valid move
     n => n times (dx,dy) is the position of the other black piece
     """
     global turn, enemy
-    if board[y+dy][x+dx] == turn or board[y+dy][x+dx] == -1:
+    if board[y + dy][x + dx] == turn or board[y + dy][x + dx] == -1:
         return -1
     i = 1
-    while(True):
+    while True:
         i += 1
-        xe = x + i*dx
-        ye = y + i*dy
-        if xe<0 or xe>=dim or ye<0 or ye>=dim:
+        xe = x + i * dx
+        ye = y + i * dy
+        if xe < 0 or xe >= dim or ye < 0 or ye >= dim:
             return -1
         elif board[ye][xe] == turn:
             return i
@@ -111,6 +112,7 @@ def valid_move(x, y):
     I need to return an array of 8 elements indicating validity in each direction
     """
     va = np.ones(8)
+    i = 0
     for [dx, dy] in [
         (0, 1),
         (0, -1),
@@ -121,14 +123,26 @@ def valid_move(x, y):
         (1, -1),
         (-1, 1),
     ]:
-        while
-        if board[y + dy][x + dx] == enemy:
-            x += dx
-            y += dy
-            if board[y + dy][x + dx] == -1:
-                return False
+        va[i] = valid_path(x, y, dx, dy)
+        i += 1
+    return va
+
+
+def play_move(x, y, array):
+    """
+    This will play the move and will call the switch pieces that will switch pieces after the code is done running
+    just make all the pieces between the current position and target equal to turn
+    I can get the coordinates of the target by deecoding the index from the dictionary of direactions
+    """
+    for i in range(8):
+        if array[i] == -1:
+            pass
         else:
-            return False
+            switch_pieces()
+
+
+def switch_pieces():
+    pass
 
 
 def examine(len, x, y, dx, dy) -> int:
