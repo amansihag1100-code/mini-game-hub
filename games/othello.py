@@ -2,6 +2,10 @@ import pygame as pg
 import numpy as np
 from sys import exit
 
+"""
+A Dictionary with indices from 0-7 and the correpsonding values are tthe dx and dy for eaach direction
+"""
+
 # pygame
 pg.init()
 clock = pg.time.Clock()
