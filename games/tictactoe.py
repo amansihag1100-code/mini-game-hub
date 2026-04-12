@@ -11,8 +11,8 @@ screen_width = space
 screen = pg.display.set_mode((screen_width, screen_height))
 
 # general
-len = 10
-dim = 5
+len = 5
+dim = 10
 box_len = space / (dim + 2)
 pgfont = pg.font.Font(None, int(box_len))
 x_surf = pgfont.render("X", False, "Lime")

@@ -18,5 +18,5 @@ dict = {
     6: (1, -1),
     7: (-1, 1),
 }
-for x in dict:
-    print(dict[x])  # loops through the indices
+n = np.empty(8)
+print(n)
