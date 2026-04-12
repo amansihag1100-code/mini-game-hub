@@ -80,7 +80,7 @@ def check_exp():
     return not (exp[0] < 0 or exp[0] >= dim or exp[1] < 0 or exp[1] >= dim)
 
 
-def valid_path(x, y, dx, dy) -> int:
+def valid_path(x, y, dx, dy) -> int:  # this checks if a path is valid or not
     """
     -1 => no valid move
     n => n times (dx,dy) is the position of the other black piece
@@ -124,22 +124,14 @@ def valid_move(x, y):
     as soon as validity becomes false I want to return
     for each value of (x,y), I have 8 possible values of validity
     I need to return an array of 8 elements indicating validity in each direction
+    For each position I need to check if a path is vlaid or not
     """
-    va = np.ones(8)
-    i = 0
-    for [dx, dy] in [
-        (0, 1),
-        (0, -1),
-        (1, 0),
-        (-1, 0),
-        (1, 1),
-        (-1, -1),
-        (1, -1),
-        (-1, 1),
-    ]:
-        va[i] = valid_path(x, y, dx, dy)
-        i += 1
-    return va
+    for x in dim:
+        for y in dim:
+            if board[y][x] != -1:
+                for x in range(dim):
+                    (dx, dy) = dict[x]
+                    return valid_path(x, y, dx, dy)
 
 
 def play_move(x, y, array):
