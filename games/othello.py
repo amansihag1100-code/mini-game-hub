@@ -5,6 +5,16 @@ from sys import exit
 """
 A Dictionary with indices from 0-7 and the correpsonding values are tthe dx and dy for eaach direction
 """
+dict = {
+    0: (0, 1),
+    1: (0, -1),
+    2: (1, 0),
+    3: (-1, 0),
+    4: (1, 1),
+    5: (-1, -1),
+    6: (1, -1),
+    7: (-1, 1),
+}
 
 # pygame
 pg.init()
