@@ -3,7 +3,7 @@ import numpy as np
 from sys import exit
 
 """
-A Dictionary with indices from 0-7 and the correpsonding values are tthe dx and dy for eaach direction
+A Dictionary with indices from 0-7 and the correpsonding values are the dx and dy for eaach direction
 """
 dict = {
     0: (0, 1),
@@ -86,12 +86,11 @@ def out_of_bound(x):
 
 
 def valid_path(x, y, dx, dy):  # this checks if a path is valid or not
-    """
-    I am on an empty square now
-    -1 => no valid move
-    n =>(x,y) + n times (dx,dy) is the position of the other black piece
-    """
-    global turn, enemy
+    global turn
+    if out_of_bound(x + dx) or out_of_bound(y + dy):
+        return False
+    if board[y + dy][x + dx] == turn:
+        return False
     while True:
         x += dx
         y += dy
@@ -103,67 +102,92 @@ def valid_path(x, y, dx, dy):  # this checks if a path is valid or not
             return True
 
 
-def valid_move(x, y):
-    # returns an arrray of dim 8 with the coords of next black and (-1,-1) if no move is valid
-    arr = np.empty(8)
+def move_array(x, y):
+    arr = np.ones(8)
     for i in range(8):
         (dx, dy) = dict[i]
         arr[i] = valid_path(x, y, dx, dy)
     return arr
 
 
-def play_move(x, y, array):  # finalises a move
+def valid_move(x, y):
+    if board[y][x] == 0 or board[y][x] == 1:
+        return False
+    if (move_array(x, y) == np.full(8, -1)).all():
+        return False
+    return True
+
+
+def play_move(x, y):  # finalises a move
+    array = move_array(x, y)
     for i in range(8):
         if array[i] == -1:
             pass
         else:
             switch_pieces(x, y, i, array[i])
+    return
 
 
 def switch_pieces(
     x, y, dr, pos
 ):  # x,y which are coords direction and index of final pos
+    # this funvtion is getting called but why is the switch getting activated so many times
+    print("switch activated")
     (dx, dy) = dict[dr]
-    for i in range(1, pos - 1):
+    for i in range(1, int(pos) - 1):
         board[y + i * dy][x + i * dx] = 1 - board[y + i * dy][x + i * dx]
 
 
-def check_winner():
-    """
-    -1 -> continue
-    0 -> 0 wins
-    1 -> x wins
-    2 -> tie
+# def check_winner():
+#     """
+#     -1 -> continue
+#     0 -> 0 wins
+#     1 -> x wins
+#     2 -> tie
+#
+#     I need to see if a player can make a move or not
+#     keep looping on emppty squares on the board while checking for valid move
+#     whenver i find a non nil array no winner : continue
+#     if there is no valid move
+#     count the number of pieces and declare the winner
+#     """
+#     if game_over():
+#         xcount = 0
+#         ocount = 0
+#         for i in board:
+#             if i == 0:
+#                 ocount += 1
+#             elif i == 1:
+#                 xcount += 1
+#         if xcount > ocount:
+#             return 1
+#         elif ocount > xcount:
+#             return 0
+#         else:
+#             return 2
+#     else:
+#         return -1
+# valid move is a
 
-    I need to see if a player can make a move or not
-    keep looping on emppty squares on the board while checking for valid move
-    whenver i find a non nil array no winner : continue
-    if there is no valid move
-    count the number of pieces and declare the winner
-    """
+
+def check_winner():
     if game_over():
-        xcount = 0
-        ocount = 0
-        for i in board:
-            if i == 0:
-                ocount += 1
-            elif i == 1:
-                xcount += 1
+        ocount = np.sum(board == 0)
+        xcount = np.sum(board == 1)
         if xcount > ocount:
             return 1
         elif ocount > xcount:
             return 0
         else:
             return 2
-    else:
-        return -1
+    return -1
 
 
 def game_over() -> bool:
     for x in range(dim):
         for y in range(dim):
             if board[y][x] == -1:
-                if (valid_move(x, y) != np.full(8, -1)).all():
+                if (move_array(x, y) != np.full(8, -1)).all():
                     return False
     return True
 
@@ -210,10 +234,14 @@ while True:
             if event.key == pg.K_RETURN or event.key == pg.K_e or event.key == pg.K_i:
                 if not game_active:
                     reset()
-                elif game_active and valid_move:
-                    board[swap_ptr(ptr)] = turn
+                elif game_active and valid_move(ptr[0], ptr[1]):
+                    play_move(ptr[0], ptr[1])
+                    board[ptr[1]][ptr[0]] = turn
                     toggle_turn()
                     winner = check_winner()
+                    print(ptr)
+                    print("check_winner: ", check_winner())
+                    print("move_array: ", move_array(ptr[0], ptr[1]))
                     if winner == -1:
                         pass
                     else:
@@ -271,7 +299,11 @@ while True:
 
     menu_rect = menu_surf.get_rect(center=(space / 2, box_len / 2))
     screen.blit(menu_surf, menu_rect)
-
+    """
+    when do i need to call each function?
+    check_winner each timme move is made
+    play_movve also each time when a move is made
+    """
     # End
     pg.display.update()
     clock.tick(16)
