@@ -82,114 +82,64 @@ def check_exp():
 
 def valid_path(x, y, dx, dy):  # this checks if a path is valid or not
     """
+    I am on an empty square now
     -1 => no valid move
-    n => n times (dx,dy) is the position of the other black piece
+    n =>(x,y) + n times (dx,dy) is the position of the other black piece
     """
-    nope = (-1, -1)
     global turn, enemy
     if board[y + dy][x + dx] == turn or board[y + dy][x + dx] == -1:
-        return nope
+        return -1
     i = 1
     while True:
         i += 1
         xe = x + i * dx
         ye = y + i * dy
         if xe < 0 or xe >= dim or ye < 0 or ye >= dim:
-            return nope
+            return -1
         elif board[ye][xe] == turn:
-            return (xe, ye)
+            return i
         elif board[ye][xe] == -1:
-            return nope
-        """
-        Here I enter a loop where I just need to search for black
-        If I get out of bound or find an empty square: game over
-        else we found it
-        I have chance
-        If I find turn from now It is a valid move
-        If not invlaid
-        If I find any -1 return false
-        I need to return both validity and index because I need to switch the pieces in between as well
-        why not return a tupple of coordinates and if the tuple is (-1, -1) then the move is not valid
-        """
+            return -1
 
 
-def valid_move(x, y):  # this function is called only if I am on an empty square
-    global dim
-    """
-    I need to loop in all the directions for a single square
-    If it is emmpty then check the folloeing conditions
-    there must be a white in nearby square
-    If you find an empty square next stop. -> invalid
-    If you again find white, keep moving
-    If you find black stop
-    There are 8 possible directions.
-    global enemy, turn
-    as soon as validity becomes false I want to return
-    for each value of (x,y), I have 8 possible values of validity
-    I need to return an array of 8 elements indicating validity in each direction
-    For each position I need to check if a path is vlaid or not
-    """
-    arr = np.empty(dim)
-    for i in range(dim):
+def valid_move(x, y):
+    # returns an arrray of dim 8 with the coords of next black and (-1,-1) if no move is valid
+    arr = np.empty(8)
+    for i in range(8):
         (dx, dy) = dict[i]
         arr[i] = valid_path(x, y, dx, dy)
     return arr
 
 
 def play_move(x, y, array):
-    """
-    This will play the move and will call the switch pieces that will switch pieces after the code is done running
-    just make all the pieces between the current position and target equal to turn
-    I can get the coordinates of the target by deecoding the index from the dictionary of direactions
-    """
     for i in range(8):
         if array[i] == -1:
             pass
         else:
-            arr = valid_move(x, y)
-            for s in arr:
-                switch_pieces(
-                    (x, y),
-                )
-                """
-                2 coords both for black
-                and it will switch all the pieces in b/w
-                """
+            switch_pieces(x, y, i, array[i])
 
 
-def switch_pieces(t1, t2):
-    (x1, y1) = t1
-    (x2, y2) = t2
-    pass
-
-
-def examine(len, x, y, dx, dy) -> int:
-    val = board[y][x]
-    for i in range(len):
-        if board[y + (i * dy)][x + (i * dx)] == val:
-            continue
-        else:
-            return -1
-    return int(val)
+def switch_pieces(
+    x, y, dr, pos
+):  # x,y which are coords direction and index of final pos
+    (dx, dy) = dict[dr]
+    for i in range(1, pos - 1):
+        board[y + i * dy][x + i * dx] = 1 - board[y + i * dy][x + i * dx]
 
 
 def check_winner():
-    global winner
-    for [dx, dy] in [(0, 1), (1, 0), (1, 1), (-1, 1)]:
-        for x in range(dim):
-            for y in range(dim):
-                if (
-                    0 <= (x + (dx * (len - 1))) < dim
-                    and 0 <= (y + (dy * (len - 1))) < dim
-                ):
-                    if examine(len, x, y, dx, dy) != -1:
-                        return examine(len, x, y, dx, dy)
+    """
+    I need to see if a player can make a move or not
+    keep looping on emppty squares on the board while checking for valid move
+    whenver i find a non nil array no winner : continue
+    if there is no valid move
+    count the number of pieces and declare the winner
+    """
 
     for i in board:
         for j in i:
             if j == -1:
                 return -1
-
     return 2
 
 
@@ -300,3 +250,25 @@ while True:
     # End
     pg.display.update()
     clock.tick(16)
+    """
+    I need to loop in each direction
+    and not looping dimension times but 8 times always as there are 8 possible directions only here
+    If it is emmpty then check the folloeing conditions
+    there must be a white in nearby square
+    If you find an empty square next stop. -> invalid
+    If you again find white, keep moving
+    If you find black stop
+    There are 8 possible directions.
+    global enemy, turn
+    as soon as validity becomes false I want to return
+    for each value of (x,y), I have 8 possible values of validity
+    I need to return an array of 8 elements indicating validity in each direction
+    For each position I need to check if a path is vlaid or not
+    Here I enter a loop where I just need to search for black
+    If I get out of bound or find an empty square: game over
+    else we found it
+    I have chance
+    If I find turn from now It is a valid move
+    If not invlaid
+    If I find any -1 return false
+    """
