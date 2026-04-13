@@ -33,6 +33,10 @@ x_surf = pgfont.render("X", False, "Lime")
 x_rect = x_surf.get_rect
 o_surf = pgfont.render("O", False, "Pink")
 board = np.full((dim, dim), -1)
+board[dim // 2, dim // 2] = 1
+board[dim // 2 - 1, dim // 2] = 0
+board[dim // 2 - 1, dim // 2 - 1] = 1
+board[dim // 2, dim // 2 - 1] = 0
 ptr = [int(dim / 2), int(dim / 2)]
 exp = ptr.copy()
 turn = 1
@@ -85,21 +89,25 @@ def out_of_bound(x):
         return True
 
 
-def valid_path(x, y, dx, dy):  # this checks if a path is valid or not
-    global turn
+def valid_path(x, y, dx, dy):
+    # returns 0 if path is not valid
+    # else retruns the index of postion relative
+    global turn, ptr
+    i = 0
     if out_of_bound(x + dx) or out_of_bound(y + dy):
-        return False
+        return 0
     if board[y + dy][x + dx] == turn:
-        return False
+        return 0
     while True:
         x += dx
         y += dy
+        i += 1
         if out_of_bound(x) or out_of_bound(y):
-            return False
+            return 0
         elif board[y][x] == -1:
-            return False
+            return 0
         elif board[y][x] == turn:
-            return True
+            return i
 
 
 def move_array(x, y):
@@ -113,7 +121,7 @@ def move_array(x, y):
 def valid_move(x, y):
     if board[y][x] == 0 or board[y][x] == 1:
         return False
-    if (move_array(x, y) == np.full(8, -1)).all():
+    if (move_array(x, y) == np.zeros(8)).all():
         return False
     return True
 
@@ -121,53 +129,18 @@ def valid_move(x, y):
 def play_move(x, y):  # finalises a move
     array = move_array(x, y)
     for i in range(8):
-        if array[i] == -1:
+        if array[i] == 0:
             pass
         else:
             switch_pieces(x, y, i, array[i])
     return
 
 
-def switch_pieces(
-    x, y, dr, pos
-):  # x,y which are coords direction and index of final pos
-    # this funvtion is getting called but why is the switch getting activated so many times
-    print("switch activated")
+def switch_pieces(x, y, dr, pos):
+    # print("switch activated")
     (dx, dy) = dict[dr]
-    for i in range(1, int(pos) - 1):
+    for i in range(1, int(pos)):
         board[y + i * dy][x + i * dx] = 1 - board[y + i * dy][x + i * dx]
-
-
-# def check_winner():
-#     """
-#     -1 -> continue
-#     0 -> 0 wins
-#     1 -> x wins
-#     2 -> tie
-#
-#     I need to see if a player can make a move or not
-#     keep looping on emppty squares on the board while checking for valid move
-#     whenver i find a non nil array no winner : continue
-#     if there is no valid move
-#     count the number of pieces and declare the winner
-#     """
-#     if game_over():
-#         xcount = 0
-#         ocount = 0
-#         for i in board:
-#             if i == 0:
-#                 ocount += 1
-#             elif i == 1:
-#                 xcount += 1
-#         if xcount > ocount:
-#             return 1
-#         elif ocount > xcount:
-#             return 0
-#         else:
-#             return 2
-#     else:
-#         return -1
-# valid move is a
 
 
 def check_winner():
@@ -239,9 +212,10 @@ while True:
                     board[ptr[1]][ptr[0]] = turn
                     toggle_turn()
                     winner = check_winner()
-                    print(ptr)
-                    print("check_winner: ", check_winner())
-                    print("move_array: ", move_array(ptr[0], ptr[1]))
+                    # print("ptr :", ptr)
+                    # print(board)
+                    # print("check_winner: ", check_winner())
+                    # print("move_array: ", move_array(ptr[0], ptr[1]))
                     if winner == -1:
                         pass
                     else:
