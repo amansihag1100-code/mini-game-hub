@@ -80,6 +80,11 @@ def check_exp():
     return not (exp[0] < 0 or exp[0] >= dim or exp[1] < 0 or exp[1] >= dim)
 
 
+def out_of_bound(x):
+    if x < 0 or x >= 8:
+        return True
+
+
 def valid_path(x, y, dx, dy):  # this checks if a path is valid or not
     """
     I am on an empty square now
@@ -87,19 +92,15 @@ def valid_path(x, y, dx, dy):  # this checks if a path is valid or not
     n =>(x,y) + n times (dx,dy) is the position of the other black piece
     """
     global turn, enemy
-    if board[y + dy][x + dx] == turn or board[y + dy][x + dx] == -1:
-        return -1
-    i = 1
     while True:
-        i += 1
-        xe = x + i * dx
-        ye = y + i * dy
-        if xe < 0 or xe >= dim or ye < 0 or ye >= dim:
-            return -1
-        elif board[ye][xe] == turn:
-            return i
-        elif board[ye][xe] == -1:
-            return -1
+        x += dx
+        y += dy
+        if out_of_bound(x) or out_of_bound(y):
+            return False
+        elif board[y][x] == -1:
+            return False
+        elif board[y][x] == turn:
+            return True
 
 
 def valid_move(x, y):
@@ -111,7 +112,7 @@ def valid_move(x, y):
     return arr
 
 
-def play_move(x, y, array):
+def play_move(x, y, array):  # finalises a move
     for i in range(8):
         if array[i] == -1:
             pass
@@ -162,7 +163,7 @@ def game_over() -> bool:
     for x in range(dim):
         for y in range(dim):
             if board[y][x] == -1:
-                if valid_move(x, y) != -1:
+                if (valid_move(x, y) != np.full(8, -1)).all():
                     return False
     return True
 
