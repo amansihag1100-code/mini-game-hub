@@ -147,6 +147,8 @@ def check_winner():
     if game_over():
         ocount = np.sum(board == 0)
         xcount = np.sum(board == 1)
+        print("x : ", xcount)
+        print("o : ", ocount)
         if xcount > ocount:
             return 1
         elif ocount > xcount:
