@@ -129,18 +129,42 @@ def switch_pieces(
 
 def check_winner():
     """
+    -1 -> continue
+    0 -> 0 wins
+    1 -> x wins
+    2 -> tie
+
     I need to see if a player can make a move or not
     keep looping on emppty squares on the board while checking for valid move
     whenver i find a non nil array no winner : continue
     if there is no valid move
     count the number of pieces and declare the winner
     """
+    if game_over():
+        xcount = 0
+        ocount = 0
+        for i in board:
+            if i == 0:
+                ocount += 1
+            elif i == 1:
+                xcount += 1
+        if xcount > ocount:
+            return 1
+        elif ocount > xcount:
+            return 0
+        else:
+            return 2
+    else:
+        return -1
 
-    for i in board:
-        for j in i:
-            if j == -1:
-                return -1
-    return 2
+
+def game_over() -> bool:
+    for x in range(dim):
+        for y in range(dim):
+            if board[y][x] == -1:
+                if valid_move(x, y) != -1:
+                    return False
+    return True
 
 
 # game loop
