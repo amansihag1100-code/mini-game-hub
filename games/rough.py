@@ -18,5 +18,8 @@ dict = {
     6: (1, -1),
     7: (-1, 1),
 }
-n = np.empty(8)
-print(n)
+n = np.full(8, -1)
+a = np.full(8, -1)
+print(a == n)
+if a == n:
+    print("sach")
