@@ -19,15 +19,19 @@ height = np.zeros(dim)
 turn = 1
 winner = -1
 game_active = True
+thickness = 17
 box_len = space / (dim + 2)
-pgfont = pg.font.Font(None, int(box_len))
-thickness = 20
-x_surf = pgfont.render("X", False, "Lime")
-x_rect = x_surf.get_rect
-o_surf = pgfont.render("O", False, "Pink")
+disk_size = box_len*0.95
+pgfont = pg.font.Font("PixelifySans-VariableFont_wght.ttf", int(box_len))
+x_surf = pg.image.load("Red_disk.png").convert_alpha()
+x_surf = pg.transform.smoothscale(x_surf,(disk_size,disk_size))
+x_rect = x_surf.get_rect()
+o_surf = pg.image.load("Yellow_disk.png").convert_alpha()
+o_surf = pg.transform.smoothscale(o_surf,(disk_size,disk_size))
+o_rect = o_surf.get_rect()
 
 # assets
-symbol = {0: "O", 1: "X"}
+symbol = {0: "Yellow", 1: "Red"}
 skeleton = pg.Rect(box_len, box_len, dim * box_len, dim * box_len)
 
 
@@ -83,7 +87,7 @@ def check_winner():
 # game loop
 while True:
     # screen
-    screen.fill("#101026")
+    screen.fill("#1d1a30")
     pg.draw.rect(screen, "white", skeleton, 1)
     for x in range(dim - 1):
         pg.draw.line(
@@ -105,10 +109,14 @@ while True:
     # Drawing X and O
     for x in range(dim):
         for y in range(dim):
+            x_pos = box_len*( x+1 )
+            y_pos = box_len*( y+1 )
             if board[(y, x)] == 0:
-                screen.blit(o_surf, (box_len * (1.27 + x), box_len * (1.2 + y)))
+                o_rect.center = (x_pos + box_len//2, y_pos+ box_len//2)
+                screen.blit(o_surf,o_rect)
             if board[(y, x)] == 1:
-                screen.blit(x_surf, (box_len * (1.27 + x), box_len * (1.2 + y)))
+                x_rect.center = (x_pos+ box_len//2, y_pos+ box_len//2)
+                screen.blit(x_surf,x_rect)
 
     # event loop
     for event in pg.event.get():
@@ -145,15 +153,15 @@ while True:
                 ptr = min(dim - 1, ptr + 1)
 
     if game_active:
-        menu_surf = pgfont.render(f"{symbol[turn]}'s turn", False, "White")
+        menu_surf = pgfont.render(f"{symbol[turn]}'s turn", False, f"{symbol[turn]}")
         cursor = pg.Rect(box_len * (ptr + 1), box_len - thickness, box_len, thickness)
-        pg.draw.rect(screen, "yellow", cursor, 0)
+        pg.draw.rect(screen, "White", cursor, 0)
 
     else:
         if winner == 2:
-            menu_surf = pgfont.render("TIE", False, "Yellow")
+            menu_surf = pgfont.render("TIE", False, "White")
         else:
-            menu_surf = pgfont.render(f"{symbol[winner]} won", False, "Yellow")
+            menu_surf = pgfont.render(f"{symbol[winner]} won", False, "White")
 
     menu_rect = menu_surf.get_rect(center=(space / 2, box_len / 2))
     screen.blit(menu_surf, menu_rect)
