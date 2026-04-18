@@ -14,10 +14,11 @@ screen = pg.display.set_mode((screen_width, screen_height))
 len = 5
 dim = 10
 box_len = space / (dim + 2)
-pgfont = pg.font.Font(None, int(box_len))
+pgfont = pg.font.Font("PixelifySans-VariableFont_wght.ttf", int(box_len))
 x_surf = pgfont.render("X", False, "Lime")
-x_rect = x_surf.get_rect
+x_rect = x_surf.get_rect()
 o_surf = pgfont.render("O", False, "Pink")
+o_rect = o_surf.get_rect()
 board = np.full((dim, dim), -1)
 ptr = [int(dim / 2), int(dim / 2)]
 exp = ptr.copy()
@@ -98,7 +99,7 @@ def check_winner():
 # game loop
 while True:
     # screen
-    screen.fill("black")
+    screen.fill("#222222")
     pg.draw.rect(screen, "white", skeleton, 1)
     for x in range(dim - 1):
         pg.draw.line(
@@ -120,10 +121,14 @@ while True:
     # Drawing X and O
     for x in range(dim):
         for y in range(dim):
+            x_pos = box_len*( x+1 )
+            y_pos = box_len*( y+1 )
             if board[(y, x)] == 0:
-                screen.blit(o_surf, (box_len * (1.27 + x), box_len * (1.2 + y)))
+                o_rect.center = (x_pos + box_len//2, y_pos+ box_len//2)
+                screen.blit(o_surf,o_rect)
             if board[(y, x)] == 1:
-                screen.blit(x_surf, (box_len * (1.27 + x), box_len * (1.2 + y)))
+                x_rect.center = (x_pos+ box_len//2, y_pos+ box_len//2)
+                screen.blit(x_surf,x_rect)
 
     # event loop
     for event in pg.event.get():

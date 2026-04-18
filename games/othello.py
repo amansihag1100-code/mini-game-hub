@@ -50,7 +50,7 @@ game_active = True
 enemy = 1 - turn
 
 # assets
-symbol = {0: "O", 1: "X", 2: "Tie"}
+symbol = {0: "White", 1: "Black", 2: "Tie"}
 skeleton = pg.Rect(box_len, box_len, dim * box_len, dim * box_len)
 cursor = pg.Rect(
     1.1 * box_len + ptr[0] * box_len,
@@ -273,7 +273,7 @@ while True:
         )
 
     if game_active:
-        menu_surf = pgfont.render(f"{symbol[turn]}'s turn", False, "White")
+        menu_surf = pgfont.render(f"{symbol[turn]}'s turn", False, f"{symbol[turn]}")
         pg.draw.rect(screen, "yellow", cursor, 3)
 
     else:

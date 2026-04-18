@@ -83,7 +83,7 @@ def check_winner():
 # game loop
 while True:
     # screen
-    screen.fill("black")
+    screen.fill("#101026")
     pg.draw.rect(screen, "white", skeleton, 1)
     for x in range(dim - 1):
         pg.draw.line(
