@@ -25,13 +25,18 @@ screen_width = space
 screen = pg.display.set_mode((screen_width, screen_height))
 
 # general
+# x stands for black and o for white
 len = 8
 dim = 8
 box_len = space / (dim + 2)
-pgfont = pg.font.Font(None, int(box_len))
-x_surf = pgfont.render("X", False, "Lime")
-x_rect = x_surf.get_rect
-o_surf = pgfont.render("O", False, "Pink")
+disk_size = box_len*0.95
+pgfont = pg.font.Font("PixelifySans-VariableFont_wght.ttf", int(box_len))
+x_surf = pg.image.load("blackpiece.png").convert_alpha()
+x_surf = pg.transform.smoothscale(x_surf,(disk_size,disk_size))
+x_rect = x_surf.get_rect()
+o_surf = pg.image.load("whitepiece.png").convert_alpha()
+o_surf = pg.transform.smoothscale(o_surf,(disk_size,disk_size))
+o_rect = o_surf.get_rect()
 board = np.full((dim, dim), -1)
 board[dim // 2, dim // 2] = 1
 board[dim // 2 - 1, dim // 2] = 0
@@ -170,7 +175,7 @@ def game_over() -> bool:
 # game loop
 while True:
     # screen
-    screen.fill("black")
+    screen.fill("#006400")
     pg.draw.rect(screen, "white", skeleton, 1)
     for x in range(dim - 1):
         pg.draw.line(
@@ -192,10 +197,14 @@ while True:
     # Drawing X and O
     for x in range(dim):
         for y in range(dim):
+            x_pos = box_len*( x+1 )
+            y_pos = box_len*( y+1 )
             if board[(y, x)] == 0:
-                screen.blit(o_surf, (box_len * (1.27 + x), box_len * (1.2 + y)))
+                o_rect.center = (x_pos + box_len//2, y_pos+ box_len//2)
+                screen.blit(o_surf,o_rect)
             if board[(y, x)] == 1:
-                screen.blit(x_surf, (box_len * (1.27 + x), box_len * (1.2 + y)))
+                x_rect.center = (x_pos+ box_len//2, y_pos+ box_len//2)
+                screen.blit(x_surf,x_rect)
 
     # event loop
     for event in pg.event.get():
