@@ -92,7 +92,7 @@ echo ""
 
 echo -e "\e[32m STARTING GAME .... \e[0m"
 
-python game.py "$user1" "$user2"
+py game.py "$user1" "$user2"
 
 
 

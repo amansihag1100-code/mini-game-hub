@@ -11,6 +11,15 @@ player2 = sys.argv[2]  # get usernames from main.sh , python3 game.py aman ankit
 py.init()  # starts all pygame modules
 
 
+py.mixer.init()
+
+music_on = True
+music_file = "materials/2.mp3"
+
+py.mixer.music.load(music_file)
+py.mixer.music.play(-1)
+
+
 
 
 # creating window
@@ -20,7 +29,7 @@ py.display.set_caption("MINI GAME HUB")
 
 #image as background
 
-bgimg = py.image.load("materials/bgimg.jpg")
+bgimg = py.image.load("materials/1.jpg")
 bgimg = py.transform.scale(bgimg,(width,height))
 
 
@@ -105,11 +114,12 @@ while running:
     ttt_btn = py.Rect(200,150,200,50)
     oth_btn = py.Rect(200,230,200,50)    #x,y and w,h of clickable box
     c4_btn = py.Rect(200,310,200,50)
-
+    music_btn = py.Rect(200,390,200,50)
 
     drawbutton(ttt_btn,"TIC TAC TOE")
     drawbutton(oth_btn,"OTHELLO")
     drawbutton(c4_btn,"CONNECT 4")
+    drawbutton(music_btn,"MUSIC OFF" if music_on else "MUSIC ON")
 
 
     for event in py.event.get():      #takes event mouse clicks , keyboard , window close etc.
@@ -128,6 +138,15 @@ while running:
             
             if c4_btn.collidepoint(mouseposition):
                 launchgame("games/connect4.py")
+
+            if music_btn.collidepoint(mouseposition):
+                if music_on:
+                    py.mixer.music.pause()
+                    music_on = False
+                else:
+                    py.mixer.music.unpause()
+                    music_on = True
+
 
 
 
