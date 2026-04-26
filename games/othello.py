@@ -1,6 +1,17 @@
+#new added 
+import os
+os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide"
+
 import pygame as pg
 import numpy as np
 from sys import exit
+
+
+#new added
+import sys
+
+player1 = sys.argv[1]
+player2 = sys.argv[2]
 
 """
 A Dictionary with indices from 0-7 and the correpsonding values are the dx and dy for eaach direction
@@ -19,7 +30,7 @@ dict = {
 # pygame
 pg.init()
 clock = pg.time.Clock()
-space = 1000
+space = 700
 screen_height = space
 screen_width = space
 screen = pg.display.set_mode((screen_width, screen_height))
@@ -152,8 +163,7 @@ def check_winner():
     if game_over():
         ocount = np.sum(board == 0)
         xcount = np.sum(board == 1)
-        print("x : ", xcount)
-        print("o : ", ocount)
+       
         if xcount > ocount:
             return 1
         elif ocount > xcount:
@@ -229,9 +239,18 @@ while True:
                     # print("move_array: ", move_array(ptr[0], ptr[1]))
                     if winner == -1:
                         pass
-                    else:
-                        print("winner: ", winner)
-                        game_active = False
+                    else: #new added
+                        if winner == 0:
+                            print(player1)
+
+                        elif winner == 1:
+                            print(player2)
+                        elif winner == 2:
+                            print("DRAW")
+
+                        pg.quit()
+                        exit()
+                        
             # Quit using q
             elif event.key == pg.K_q:
                 pg.quit()

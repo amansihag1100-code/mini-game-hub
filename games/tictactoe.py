@@ -1,11 +1,21 @@
+#new added 
+import os
+os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide"
+
+
 import pygame as pg
 import numpy as np
 from sys import exit
 
+#new added 
+import sys
+
+player1 = sys.argv[1]
+player2 = sys.argv[2]
 # pygame
 pg.init()
 clock = pg.time.Clock()
-space = 1000
+space = 700 
 screen_height = space
 screen_width = space
 screen = pg.display.set_mode((screen_width, screen_height))
@@ -134,6 +144,7 @@ while True:
     for event in pg.event.get():
         # Quit
         if event.type == pg.QUIT:
+            print("QUIT")
             pg.quit()
             exit()
         # Keyboard input
@@ -148,11 +159,20 @@ while True:
                     winner = check_winner()
                     if winner == -1:
                         pass
-                    else:
-                        print("winner: ", winner)
-                        game_active = False
+                    else:                #new added
+                        if winner == 0:
+                            print(player1)
+                        elif winner == 1:
+                            print(player2)
+                        elif winner == 2:
+                            print("DRAW")
+
+                        pg.quit()
+                        exit()
+                        
             # Quit using q
             elif event.key == pg.K_q:
+                print("QUIT")
                 pg.quit()
                 exit()
             # Reset using r
@@ -207,3 +227,4 @@ while True:
     # End
     pg.display.update()
     clock.tick(16)
+
