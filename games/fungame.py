@@ -101,8 +101,7 @@ class FunGame:
             pg.display.update()
             self.clock.tick(60)
         pg.quit()
-        sys.exit()
-
+        return
     def handle_events(self): pass
     def render_board(self): pass
     def draw_ui(self): pass

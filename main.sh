@@ -11,7 +11,7 @@ echo""      #space for next line
 
 function_to_login_user() {          #function defined 
 
-        while true        #infinite loop until thwo players sucessfully logins or register
+        while true          #infinite loop until thwo players sucessfully logins or register
         do
                 echo -n -e " \n \U1F539 ENTER USERNAME: "  # -n prevents input taking from new line
                 read username                #read input and made a username variable
