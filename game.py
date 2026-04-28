@@ -45,7 +45,7 @@ bgimg2 = py.transform.scale(bgimg2,(width,height))
 
 
 #setting pygame's text(font) Font as font path of size
-FONT_PATH = "materials\Jersey10-Regular.ttf"
+FONT_PATH = "materials/Jersey10-Regular.ttf"
 
 def get_font(size):
     return py.font.Font(FONT_PATH, size)

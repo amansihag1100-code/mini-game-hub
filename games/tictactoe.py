@@ -1,230 +1,110 @@
-#new added 
-import os
-os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide"
-
-
 import pygame as pg
 import numpy as np
-from sys import exit
+from fungame import FunGame
 
-#new added 
-import sys
+class TicTacToe(FunGame):
+    def __init__(self):
+        super().__init__("Tic Tac Toe", space=1000, dim=10, bg_color="#222222")
+        self.win_len = 5
+        self.ptr = [int(self.dim / 2), int(self.dim / 2)]
+        
+        self.x_surf = self.pgfont.render("X", False, "Lime")
+        self.o_surf = self.pgfont.render("O", False, "Pink")
+        self.symbol = {0: "O", 1: "X", 2: "Tie"}
 
-player1 = sys.argv[1]
-player2 = sys.argv[2]
-# pygame
-pg.init()
-clock = pg.time.Clock()
-space = 700 
-screen_height = space
-screen_width = space
-screen = pg.display.set_mode((screen_width, screen_height))
-
-# general
-len = 5
-dim = 10
-box_len = space / (dim + 2)
-pgfont = pg.font.Font("assets/PixelifySans-VariableFont_wght.ttf", int(box_len))
-x_surf = pgfont.render("X", False, "Lime")
-x_rect = x_surf.get_rect()
-o_surf = pgfont.render("O", False, "Pink")
-o_rect = o_surf.get_rect()
-board = np.full((dim, dim), -1)
-ptr = [int(dim / 2), int(dim / 2)]
-exp = ptr.copy()
-turn = 1
-winner = -1
-game_active = True
-
-# assets
-symbol = {0: "O", 1: "X", 2: "Tie"}
-skeleton = pg.Rect(box_len, box_len, dim * box_len, dim * box_len)
-cursor = pg.Rect(
-    1.1 * box_len + ptr[0] * box_len,
-    1.1 * box_len + ptr[1] * box_len,
-    0.8 * box_len,
-    0.8 * box_len,
-)
+    def reset(self):
+        self.board.fill(-1)
+        self.ptr = [int(self.dim / 2), int(self.dim / 2)]
+        self.turn = 1
+        self.winner = -1
+        self.game_active = True
 
 
-# functions
-def swap_ptr(ptr):
-    return (ptr[1], ptr[0])
+    def attempt_move(self, col, row):
+        if self.game_active and 0 <= col < self.dim and 0 <= row < self.dim:
+            if self.board[row][col] == -1:
+                self.board[row][col] = self.turn
+                
+                # Flashy Particles!
+                px = self.box_len * (col + 1) + self.box_len / 2
+                py = self.box_len * (row + 1) + self.box_len / 2
+                color = "Lime" if self.turn == 1 else "Pink"
+                self.add_particles(px, py, color, 30)
+                
+                self.toggle_turn()
+                self.winner = self.check_winner()
+                if self.winner != -1:
+                    self.game_active = False
+
+    def check_winner(self):
+        for [dx, dy] in [(0, 1), (1, 0), (1, 1), (-1, 1)]:
+            for x in range(self.dim):
+                for y in range(self.dim):
+                    if (0 <= (x + (dx * (self.win_len - 1))) < self.dim and 
+                        0 <= (y + (dy * (self.win_len - 1))) < self.dim):
+                        if self.examine(self.win_len, x, y, dx, dy) != -1:
+                            return self.examine(self.win_len, x, y, dx, dy)
+        if -1 not in self.board: return 2
+        return -1
 
 
-def toggle_turn():
-    global turn
-    turn = 1 - turn
+    def handle_events(self):
+        for event in pg.event.get():
+            if event.type == pg.QUIT:
+                self.running = False
+            elif event.type == pg.MOUSEMOTION:
+                self.mouse_pos = event.pos
+                col, row = self.mouse_to_grid(event.pos[0], event.pos[1])
+                if 0 <= col < self.dim and 0 <= row < self.dim:
+                    self.ptr = [col, row] # Move cursor to mouse
+            elif event.type == pg.MOUSEBUTTONDOWN:
+                if event.button == 1: # Left click
+                    col, row = self.mouse_to_grid(event.pos[0], event.pos[1])
+                    if not self.game_active:
+                        self.reset()
+                    else:
+                        self.attempt_move(col, row)
+            elif event.type == pg.KEYDOWN:
+                if event.key in [pg.K_RETURN, pg.K_SPACE]:
+                    if not self.game_active: self.reset()
+                    else: self.attempt_move(self.ptr[0], self.ptr[1])
+                elif event.key == pg.K_q: self.running = False
+                elif event.key == pg.K_r: self.reset()
+                # Arrow keys
+                elif event.key == pg.K_UP: self.ptr[1] = max(0, self.ptr[1] - 1)
+                elif event.key == pg.K_DOWN: self.ptr[1] = min(self.dim - 1, self.ptr[1] + 1)
 
+                elif event.key == pg.K_LEFT: self.ptr[0] = max(0, self.ptr[0] - 1)
+                elif event.key == pg.K_RIGHT: self.ptr[0] = min(self.dim - 1, self.ptr[0] + 1)
 
-def reset():
-    board.fill(-1)
-    global ptr
-    ptr = [int(dim / 2), int(dim / 2)]
-    global exp
-    exp = ptr.copy()
-    global turn
-    turn = 1
-    global winner
-    winner = -1
-    global game_active
-    game_active = True
+    def render_board(self):
+        for x in range(self.dim):
+            for y in range(self.dim):
+                x_pos = self.box_len * (x + 1)
 
+                y_pos = self.box_len * (y + 1)
+                rect = self.o_surf.get_rect(center=(x_pos + self.box_len//2, y_pos + self.box_len//2))
+                if self.board[(y, x)] == 0: self.screen.blit(self.o_surf, rect)
+                elif self.board[(y, x)] == 1: self.screen.blit(self.x_surf, rect)
 
-def check_exp():
-    global exp
-    return not (exp[0] < 0 or exp[0] >= dim or exp[1] < 0 or exp[1] >= dim)
+    def draw_ui(self):
+        cursor = pg.Rect(self.box_len * (self.ptr[0] + 1), self.box_len * (self.ptr[1] + 1), self.box_len, self.box_len)
+        
+        if self.game_active:
+            # Subtle hover effect
+            hover_surf = pg.Surface((self.box_len, self.box_len), pg.SRCALPHA)
+            hover_surf.fill((255, 255, 255, 50)) # Transparent white
+            self.screen.blit(hover_surf, cursor.topleft)
+            pg.draw.rect(self.screen, "yellow", cursor, 3)
 
-
-def examine(len, x, y, dx, dy) -> int:
-    val = board[y][x]
-    for i in range(len):
-        if board[y + (i * dy)][x + (i * dx)] == val:
-            continue
+            
+            menu_surf = self.pgfont.render(f"{self.symbol[self.turn]}'s turn", False, "White")
         else:
-            return -1
-    return int(val)
+            txt = "TIE" if self.winner == 2 else f"{self.symbol[self.winner]} won!"
+            menu_surf = self.pgfont.render(txt, False, "Yellow")
 
+        menu_rect = menu_surf.get_rect(center=(self.space / 2, self.box_len / 2))
+        self.screen.blit(menu_surf, menu_rect)
 
-def check_winner():
-    global winner
-    for [dx, dy] in [(0, 1), (1, 0), (1, 1), (-1, 1)]:
-        for x in range(dim):
-            for y in range(dim):
-                if (
-                    0 <= (x + (dx * (len - 1))) < dim
-                    and 0 <= (y + (dy * (len - 1))) < dim
-                ):
-                    if examine(len, x, y, dx, dy) != -1:
-                        return examine(len, x, y, dx, dy)
-
-    for i in board:
-        for j in i:
-            if j == -1:
-                return -1
-
-    return 2
-
-
-# game loop
-while True:
-    # screen
-    screen.fill("#222222")
-    pg.draw.rect(screen, "white", skeleton, 1)
-    for x in range(dim - 1):
-        pg.draw.line(
-            screen,
-            "White",
-            (box_len * (2 + x), box_len),
-            (box_len * (2 + x), box_len * (dim + 1)),
-            width=1,
-        )
-    for y in range(dim - 1):
-        pg.draw.line(
-            screen,
-            "White",
-            (box_len, box_len * (2 + y)),
-            (box_len * (dim + 1), box_len * (2 + y)),
-            width=1,
-        )
-
-    # Drawing X and O
-    for x in range(dim):
-        for y in range(dim):
-            x_pos = box_len*( x+1 )
-            y_pos = box_len*( y+1 )
-            if board[(y, x)] == 0:
-                o_rect.center = (x_pos + box_len//2, y_pos+ box_len//2)
-                screen.blit(o_surf,o_rect)
-            if board[(y, x)] == 1:
-                x_rect.center = (x_pos+ box_len//2, y_pos+ box_len//2)
-                screen.blit(x_surf,x_rect)
-
-    # event loop
-    for event in pg.event.get():
-        # Quit
-        if event.type == pg.QUIT:
-            print("QUIT")
-            pg.quit()
-            exit()
-        # Keyboard input
-        elif event.type == pg.KEYDOWN:
-            # Filling board and checking winner
-            if event.key == pg.K_RETURN or event.key == pg.K_e or event.key == pg.K_i:
-                if not game_active:
-                    reset()
-                elif game_active and board[swap_ptr(ptr)] == -1:
-                    board[swap_ptr(ptr)] = turn
-                    toggle_turn()
-                    winner = check_winner()
-                    if winner == -1:
-                        pass
-                    else:                #new added
-                        if winner == 0:
-                            print(player1)
-                        elif winner == 1:
-                            print(player2)
-                        elif winner == 2:
-                            print("DRAW")
-
-                        pg.quit()
-                        exit()
-                        
-            # Quit using q
-            elif event.key == pg.K_q:
-                print("QUIT")
-                pg.quit()
-                exit()
-            # Reset using r
-            elif event.key == pg.K_r:
-                reset()
-            # Movement Keys
-            elif event.key == pg.K_UP or event.key == pg.K_w or event.key == pg.K_k:
-                exp[1] -= 1
-                if check_exp():
-                    ptr = exp.copy()
-                else:
-                    exp = ptr.copy()
-            elif event.key == pg.K_DOWN or event.key == pg.K_s or event.key == pg.K_j:
-                exp[1] += 1
-                if check_exp():
-                    ptr = exp.copy()
-                else:
-                    exp = ptr.copy()
-            elif event.key == pg.K_LEFT or event.key == pg.K_a or event.key == pg.K_h:
-                exp[0] -= 1
-                if check_exp():
-                    ptr = exp.copy()
-                else:
-                    exp = ptr.copy()
-            elif event.key == pg.K_RIGHT or event.key == pg.K_d or event.key == pg.K_l:
-                exp[0] += 1
-                if check_exp():
-                    ptr = exp.copy()
-                else:
-                    exp = ptr.copy()
-        # Moving box
-        cursor = pg.Rect(
-            1.1 * box_len + ptr[0] * box_len,
-            1.1 * box_len + ptr[1] * box_len,
-            0.8 * box_len,
-            0.8 * box_len,
-        )
-
-    if game_active:
-        menu_surf = pgfont.render(f"{symbol[turn]}'s turn", False, "White")
-        pg.draw.rect(screen, "yellow", cursor, 3)
-
-    else:
-        if winner == 2:
-            menu_surf = pgfont.render("TIE", False, "Yellow")
-        else:
-            menu_surf = pgfont.render(f"{symbol[winner]} won", False, "Yellow")
-
-    menu_rect = menu_surf.get_rect(center=(space / 2, box_len / 2))
-    screen.blit(menu_surf, menu_rect)
-
-    # End
-    pg.display.update()
-    clock.tick(16)
-
+if __name__ == "__main__":
+    TicTacToe().run()
