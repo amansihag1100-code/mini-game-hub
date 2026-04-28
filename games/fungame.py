@@ -52,13 +52,10 @@ class FunGame:
     def add_particles(self, x, y, color, count=15):
         """Spawns particles at a pixel location"""
         for _ in range(count):
-
             self.particles.append({
-
                 'x': x, 'y': y,
                 'dx': random.uniform(-4, 4),
                 'dy': random.uniform(-4, 4),
-
                 'life': random.uniform(0.5, 1.0),
                 'color': color,
                 'size': random.randint(3, 8)
@@ -69,7 +66,6 @@ class FunGame:
         dt = self.clock.get_time() / 1000.0
         for p in self.particles[:]:
             p['x'] += p['dx']
-
             p['y'] += p['dy']
             p['life'] -= dt * 2
             p['size'] -= dt * 5
@@ -103,7 +99,7 @@ class FunGame:
             self.update_and_draw_particles()
             self.draw_ui()
             pg.display.update()
-            self.clock.tick(60) # Bumped FPS for smooth particles!
+            self.clock.tick(60)
         pg.quit()
         sys.exit()
 

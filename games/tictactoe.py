@@ -30,7 +30,7 @@ class TicTacToe(FunGame):
                 py = self.box_len * (row + 1) + self.box_len / 2
                 color = "Lime" if self.turn == 1 else "Pink"
                 self.add_particles(px, py, color, 30)
-                
+
                 self.toggle_turn()
                 self.winner = self.check_winner()
                 if self.winner != -1:
