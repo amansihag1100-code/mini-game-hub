@@ -13,7 +13,7 @@ metric=$1   #first argument stored in metric variable
 echo -e "\e[31m                                                        LEADERBOARD                     \e[0m" # print  leaderboard in red 
 
 #used -F to set comma as separator
-awk -F"," '    
+awk -F"," -v metric="$metric" '
 NR>1 {     #process each row skip header as nr>1
 
     game = $4
@@ -36,8 +36,20 @@ END {
         printf "\n\033[33m                %s \033[0m\n", g     #prints game name in yellow
         print "\n"
 
-
         printf "\033[31m%-15s %-10s %-10s %-10s\033[0m\n", "Player", "Wins", "Losses", "Ratio"      # print columns %-15s leftlaigned width15
+
+        # decide sorting column based on metric selected from pygame menu
+        if (metric == "wins") {
+            sort_cmd = "sort -t, -k2 -nr"
+        } else if (metric == "losses") {
+            sort_cmd = "sort -t, -k3 -nr"
+        } else {
+            sort_cmd = "sort -t, -k4 -nr"
+        }
+
+        # temp string to store all players data before sorting
+        temp = ""
+
         for (p in players) {                        #to iterate over all players in players named array
             
             w = win[g,p] + 0
@@ -47,8 +59,25 @@ END {
 
             r = (l==0)? w : w/l            # calculating ratio atio equals to wins if loses =0 else ratio is win by lose
 
-            printf "\033[32m%-15s %-10d %-10d %-10.2f\033[0m\n", p, w, l, r            #%[alignment][width][type] like - used for left align (default is right aligned) 15 is take 15 spaces and s is string d is integer   %-10.2f is two decimal floating number 
+            # store clean comma separated data (important for sorting)
+            temp = temp sprintf("%s,%d,%d,%.2f\n", p, w, l, r)
         }
+
+        # run sorting command on collected data
+        cmd = "echo \"" temp "\" | " sort_cmd
+
+        # read sorted output line by line
+        while ((cmd | getline line) > 0) {
+
+            if (line == "") continue           
+
+            split(line, parts, ",")
+
+            # print nicely formatted + colored output AFTER sorting
+            printf "\033[32m%-15s %-10d %-10d %-10.2f\033[0m\n", parts[1], parts[2], parts[3], parts[4]
+        }
+
+        close(cmd)
     }
 }
 ' "$FILE"
