@@ -1,4 +1,3 @@
-
 import os               # used for file handling , history.csv
 
 os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide" # key value array to hide the useless lineof pygame
@@ -21,9 +20,9 @@ py.init()  # starts all pygame modules
 py.mixer.init()           #starts sound system #mixer
 
 music_on = True   # bool variable
-music_file = "materials/2.mp3"   
+music_file = "materials/2.mp3"
 
-py.mixer.music.load(music_file)      
+py.mixer.music.load(music_file)
 py.mixer.music.play(-1)           # -1 is used for forever loop
 
 
@@ -79,14 +78,13 @@ def show_charts():
     if not os.path.exists("history.csv"):
         print("No history yet")
         return
-    
 
     games = []      #empty list
     wins = []
 
     with open("history.csv", "r") as f:       #open this file in read mode and store in varible f
-        
-        next(f) # skip first line in  history.csv     
+
+        next(f) # skip first line in  history.csv
 
         for line in f:
             parts = line.strip().split(",")      # parts is list , strip removes extra spaces and split at ,
@@ -95,7 +93,7 @@ def show_charts():
                 winner = parts[0]
                 game = parts[3]
 
-                #add item to empty list created above 
+                # add item to empty list created above 
                 wins.append(winner)
                 games.append(game)
 
@@ -164,7 +162,7 @@ def drawbutton(rect,text):
 
     if rect.collidepoint(mouseposition):         # mouse pos collided with rect around image as text
         py.draw.rect(screen,hovercolor,rect,border_radius=15)
-    
+
     else:
         py.draw.rect(screen , btncolor,rect,border_radius=15)
 

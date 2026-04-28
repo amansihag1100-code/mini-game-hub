@@ -19,7 +19,7 @@ class FunGame:
 
         self.box_len = self.space / (self.dim + 2)
         self.disk_size = self.box_len * 0.95
-        
+
         try:
             self.pgfont = pg.font.Font("assets/PixelifySans-VariableFont_wght.ttf", int(self.box_len * 0.8))
         except FileNotFoundError:
@@ -46,12 +46,11 @@ class FunGame:
         """Converts raw mouse pixel coords to grid indices"""
         col = int((mx - self.box_len) // self.box_len)
         row = int((my - self.box_len) // self.box_len)
-
         return col, row
 
     def add_particles(self, x, y, color, count=15):
         """Spawns particles at a pixel location"""
-        for _ in range(count):
+        for i in range(count):
             self.particles.append({
                 'x': x, 'y': y,
                 'dx': random.uniform(-4, 4),
