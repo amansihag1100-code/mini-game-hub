@@ -1,0 +1,12 @@
+                    else: #new added
+                        if winner == 0:
+                            print(player1)
+
+                        elif winner == 1:
+                            print(player2)
+                        elif winner == 2:
+                            print("DRAW")
+
+                        pg.quit()
+                        exit()
+

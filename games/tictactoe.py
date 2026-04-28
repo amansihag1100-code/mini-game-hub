@@ -7,7 +7,7 @@ class TicTacToe(FunGame):
         super().__init__("Tic Tac Toe", space=1000, dim=10, bg_color="#222222")
         self.win_len = 5
         self.ptr = [int(self.dim / 2), int(self.dim / 2)]
-        
+
         self.x_surf = self.pgfont.render("X", False, "Lime")
         self.o_surf = self.pgfont.render("O", False, "Pink")
         self.symbol = {0: "O", 1: "X", 2: "Tie"}
