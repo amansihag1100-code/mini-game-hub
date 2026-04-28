@@ -39,7 +39,7 @@
 
 \section{Overview}
 
-The Mini Game Hub is a secure multiplayer gaming platform where two authenticated users can play multiple games through a graphical interface. The system integrates Bash for authentication and Python for game execution, data recording, and analytics.
+The Mini Game Hub is a secure multiplayer gaming platform where two authenticated users can play multiple games through a graphical interface. The system integrates Bash for authentication using SHA256 algorithm to store the encoded passswords and Python for game execution, data recording, and analytics.
 
 \section{System Architecture}
 
@@ -64,8 +64,9 @@ bash main.sh
 \section{Authentication System}
 
 \begin{itemize}
-    \item Two users are authenticated using SHA-256 hashing.
-    \item Passwords are securely stored (not plaintext).
+    \item Two users are authenticated
+    \item Actual password is not stored
+    \item The passwords are hashed using SHA256 algorithm and stored
     \item New users can register.
     \item After login, Python game engine is launched.
 \end{itemize}
@@ -153,32 +154,32 @@ The system uses a base class for all games:
 
 \begin{itemize}
     \item NumPy used for all board representations
-    \item Win logic implemented using vectorized operations
     \item No manual loops for win checking
-    \item Full GUI using Pygame
+    \item GUI for everything using Pygame
 \end{itemize}
 
 \section{Hurdles Faced}
 
 \begin{itemize}
     \item Integrating Bash with Python
-    \item Handling real-time UI in Pygame
-    \item Implementing NumPy-based logic
-    \item Managing CSV data consistency
+    \item Writing logic for othello
+    \item Intergrating all the code into classes after making them work. I was just writing self. for half the day
+    \item Changing all the working functions into numpy methods, and as we don't know if we have a method for this thing.
 \end{itemize}
 
 \textbf{Solutions:}
 \begin{itemize}
     \item Used subprocess for communication
+    \item Just kept coding and then checking
+    \item Used vim macros to add self. in front
     \item Structured event loops properly
-    \item Used vectorized NumPy operations
+    \item Read documentation using find feature
 \end{itemize}
 
 \section{Future Improvements}
 
 \begin{itemize}
-    \item AI opponents
-    \item Database instead of CSV
+    \item Making it online so that players can play accross internet
     \item Better UI animations
     \item Player ranking system
 \end{itemize}
