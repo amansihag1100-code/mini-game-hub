@@ -57,7 +57,6 @@ The basic game flow is that the users log in, select a game, play against each o
 
 \begin{verbatim} #verbaitm to display the directory structure in a monospaced font
 hub/
-|-- assets/
 |-- materials/
 |-- report/
 |-- main.sh
@@ -69,6 +68,7 @@ hub/
 |   |-- connect4.py
 |-- users.tsv
 |-- history.csv
+|-- report.pdf
 \end{verbatim}
 
 \textbf{Entry point:}
@@ -175,6 +175,12 @@ If the users choose to play again, the same game is restarted. If they choose to
     \item Graphs of top 5 players and pie chart showing percentage of games played for each game type using Matplotlib
 \end{itemize}
 
+\section{Code Structure}
+main.sh is a bash script which asks you for your name and password.
+If player is verified it calls game.py which calls the game python scripts passing the player names as arguments.
+Game.py opens a menu to select game
+Then it calls the respective games with player names as arguments
+
 \section{Technical Constraints}
 
 \begin{itemize}
@@ -211,6 +217,7 @@ If the users choose to play again, the same game is restarted. If they choose to
     \item Better UI animations
     \item Player ranking system
 \end{itemize}
+
 
 \section{References}
 

@@ -14,7 +14,8 @@
 \contentsline {subsection}{\numberline {7.4}Leaderboard}{8}{subsection.7.4}%
 \contentsline {subsection}{\numberline {7.5}Graphs}{8}{subsection.7.5}%
 \contentsline {section}{\numberline {8}Leaderboard and Analytics}{8}{section.8}%
-\contentsline {section}{\numberline {9}Technical Constraints}{9}{section.9}%
-\contentsline {section}{\numberline {10}Hurdles Faced}{9}{section.10}%
-\contentsline {section}{\numberline {11}Future Improvements}{9}{section.11}%
-\contentsline {section}{\numberline {12}References}{10}{section.12}%
+\contentsline {section}{\numberline {9}Code Structure}{9}{section.9}%
+\contentsline {section}{\numberline {10}Technical Constraints}{9}{section.10}%
+\contentsline {section}{\numberline {11}Hurdles Faced}{9}{section.11}%
+\contentsline {section}{\numberline {12}Future Improvements}{10}{section.12}%
+\contentsline {section}{\numberline {13}References}{10}{section.13}%

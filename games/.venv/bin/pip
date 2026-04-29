@@ -1,4 +1,4 @@
-#!/home/akshit_anand/mini-game-hub/games/.venv/bin/python
+#!/home/akshit_anand/Project/games/.venv/bin/python
 # -*- coding: utf-8 -*-
 import re
 import sys
