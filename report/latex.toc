@@ -1,12 +1,12 @@
 \contentsline {section}{\numberline {1}Project Specification}{3}{section.1}%
 \contentsline {section}{\numberline {2}Overview}{3}{section.2}%
 \contentsline {section}{\numberline {3}System Architecture}{3}{section.3}%
-\contentsline {section}{\numberline {4}Authentication System}{3}{section.4}%
+\contentsline {section}{\numberline {4}Authentication System}{4}{section.4}%
 \contentsline {section}{\numberline {5}Game Engine}{4}{section.5}%
-\contentsline {section}{\numberline {6}Games Implemented}{4}{section.6}%
-\contentsline {subsection}{\numberline {6.1}Tic Tac Toe}{4}{subsection.6.1}%
-\contentsline {subsection}{\numberline {6.2}Othello}{4}{subsection.6.2}%
-\contentsline {subsection}{\numberline {6.3}Connect Four}{4}{subsection.6.3}%
+\contentsline {section}{\numberline {6}Games Implemented}{5}{section.6}%
+\contentsline {subsection}{\numberline {6.1}Tic Tac Toe}{5}{subsection.6.1}%
+\contentsline {subsection}{\numberline {6.2}Othello}{5}{subsection.6.2}%
+\contentsline {subsection}{\numberline {6.3}Connect Four}{5}{subsection.6.3}%
 \contentsline {section}{\numberline {7}Screenshots and UI}{5}{section.7}%
 \contentsline {subsection}{\numberline {7.1}Game Menu}{5}{subsection.7.1}%
 \contentsline {subsection}{\numberline {7.2}Tic Tac Toe}{6}{subsection.7.2}%
@@ -17,4 +17,4 @@
 \contentsline {section}{\numberline {9}Technical Constraints}{9}{section.9}%
 \contentsline {section}{\numberline {10}Hurdles Faced}{9}{section.10}%
 \contentsline {section}{\numberline {11}Future Improvements}{9}{section.11}%
-\contentsline {section}{\numberline {12}References}{9}{section.12}%
+\contentsline {section}{\numberline {12}References}{10}{section.12}%
