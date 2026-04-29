@@ -5,10 +5,10 @@ import sys
 
 class Othello(FunGame):
     def __init__(self, player1, player2):
-        super().__init__("Othello", space=700, dim=8, bg_color="#006400")
+        super().__init__(player1, player2, "Othello", space=700, dim=8, bg_color="#006400")
+        #super init allows child class to invoke the constructor of parent class
 
-        self.player1 = player1   # White
-        self.player2 = player2   # Black
+        self.symbol = {0:"white", 1:"black"}
 
         self.dirs = {
             0:(0,1),1:(0,-1),2:(1,0),3:(-1,0),
@@ -168,7 +168,7 @@ class Othello(FunGame):
             else:
                 pg.draw.rect(self.screen, "Red", cursor, 3)
 
-            menu = self.pgfont.render(f"{self.symbol[self.turn]}'s turn", False, "White")
+            menu = self.pgfont.render(f"{self.player_id[self.turn]}'s turn", False, self.symbol[self.turn])
         else:
             menu = self.pgfont.render("Game Over", False, "Yellow")
 

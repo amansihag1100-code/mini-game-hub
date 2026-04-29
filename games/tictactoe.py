@@ -6,10 +6,7 @@ import sys
 
 class TicTacToe(FunGame):
     def __init__(self, player1, player2):
-        super().__init__("Tic Tac Toe", space=700, dim=10, bg_color="#222222")
-
-        self.player1 = player1
-        self.player2 = player2
+        super().__init__(player1, player2, "Tic Tac Toe", space=700, dim=10, bg_color="#222222")
 
         self.win_len = 5
         self.ptr = [int(self.dim / 2), int(self.dim / 2)]
@@ -17,7 +14,7 @@ class TicTacToe(FunGame):
         self.x_surf = self.pgfont.render("X", False, "Lime")
         self.o_surf = self.pgfont.render("O", False, "Pink")
 
-        self.symbol = {0: "O", 1: "X", 2: "Tie"}
+        self.symbol = {0: "Pink", 1: "Lime", 2: "Tie"}
 
     def reset(self):
         self.board.fill(-1)
@@ -150,12 +147,11 @@ class TicTacToe(FunGame):
             pg.draw.rect(self.screen, "yellow", cursor, 3)
 
             menu_surf = self.pgfont.render(
-                f"{self.symbol[self.turn]}'s turn", False, "White"
-            )
+                f"{self.player_id[self.turn]}'s turn", False, self.symbol[self.turn])
 
         else:
             # (won't really show because we exit immediately, but kept for safety)
-            txt = "TIE" if self.winner == 2 else f"{self.symbol[self.winner]} won!"
+            txt = "TIE" if self.winner == 2 else f"{self.player_id[self.winner]} won!"
             menu_surf = self.pgfont.render(txt, False, "Yellow")
 
         menu_rect = menu_surf.get_rect(center=(self.space / 2, self.box_len / 2))

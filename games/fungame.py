@@ -5,12 +5,15 @@ import random
 
 class FunGame:
 
-    def __init__(self, title="Game", space=1000, dim=8, bg_color="#222222"):
+    def __init__(self, player1, player2, title="Game", space=1000, dim=8, bg_color="#222222"):
         pg.init()
         self.space = space
         self.dim = dim
         self.bg_color = bg_color
         self.screen_width = self.space
+        self.player1 = player1   # White
+        self.player2 = player2   # Black
+        self.player_id = {0:self.player1, 1:self.player2}
 
         self.screen_height = self.space
         self.screen = pg.display.set_mode((self.screen_width, self.screen_height))
@@ -104,3 +107,5 @@ class FunGame:
     def handle_events(self): pass
     def render_board(self): pass
     def draw_ui(self): pass
+
+

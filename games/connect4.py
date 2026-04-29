@@ -5,15 +5,12 @@ import sys
 
 class Connect4(FunGame):
     def __init__(self, player1, player2):
-        super().__init__("Connect 4", space=700, dim=7, bg_color="#1d1a30")
-
-        self.player1 = player1   # Yellow
-        self.player2 = player2   # Red
+        super().__init__(player1, player2, title="Connect 4", space=700, dim=7, bg_color="#1d1a30")
 
         self.win_len = 4
         self.ptr = int(self.dim/2)
         self.height = np.zeros(self.dim)
-        self.thickness = 17
+        self.thickness = self.box_len*(0.2)
 
         try:
             self.x_surf = pg.transform.smoothscale(pg.image.load("assets/Red_disk.png").convert_alpha(), (self.disk_size, self.disk_size))
@@ -131,7 +128,7 @@ class Connect4(FunGame):
                 cursor
         )
 
-            menu = self.pgfont.render(f"{self.symbol[self.turn]}'s turn", False, "White")
+            menu = self.pgfont.render(f"{self.player_id[self.turn]}'s turn", False, self.symbol[self.turn])
         else:
             menu = self.pgfont.render("Game Over", False, "White")
 
