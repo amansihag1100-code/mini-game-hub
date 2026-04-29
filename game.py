@@ -110,8 +110,9 @@ def show_charts():
                                                   # most_common(5) gives top 5 most common winners as list of tuples (winner, count)
     players = [x[0] for x in win_count] #x[0] is winner and x[1] is count in each tuple of win_count list so we create players list with winners (top 5)
     counts = [x[1] for x in win_count] # similarly we create counts list with counts of wins for top 5 players
-
     
+#  so at end we have players list with top 5 winners and counts list with their respective win counts which we will use to plot bar graph of top 5 players and their wins
+
     game_count = Counter(games) 
 # game_count is a dictionary where key is game name and value is count of how many times that game was played 
 # which is calculated by Counter class on games list which has all games played as read from history.csv
